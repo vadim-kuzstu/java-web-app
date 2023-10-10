@@ -2,7 +2,9 @@ package ru.kuzstu.webapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.kuzstu.webapp.exception.NotFoundException;
 import ru.kuzstu.webapp.model.User;
 import ru.kuzstu.webapp.repository.UserRepository;
 
@@ -34,4 +36,10 @@ public class UserController {
     public void create(@RequestBody User user) {
         userRepository.create(user);
     }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<?> handleException(NotFoundException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
 }
