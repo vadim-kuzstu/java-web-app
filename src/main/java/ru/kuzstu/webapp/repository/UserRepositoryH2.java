@@ -1,5 +1,7 @@
 package ru.kuzstu.webapp.repository;
 
+import ru.kuzstu.webapp.exception.NotFoundException;
+import ru.kuzstu.webapp.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.DataClassRowMapper;
@@ -8,8 +10,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import ru.kuzstu.webapp.exception.NotFoundException;
-import ru.kuzstu.webapp.model.User;
 
 import java.util.List;
 

@@ -1,45 +1,28 @@
 package ru.kuzstu.webapp.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import ru.kuzstu.webapp.exception.NotFoundException;
-import ru.kuzstu.webapp.model.User;
+import ru.kuzstu.webapp.advice.Loggable;
 import ru.kuzstu.webapp.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.List;
-
-@RestController
-@RequestMapping("api/users")
+@Controller
 public class UserController {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public UserController(UserRepository userRepository) {
+    public UserController(UserRepository userRepository){
         this.userRepository = userRepository;
     }
 
-    @GetMapping
-    public List<User> getUsers() {
-        return userRepository.readAll();
-    }
+    @Loggable
+    @GetMapping("/users")
+    public String getUsers(Model model) {
 
-    @GetMapping("/{user_id}")
-    public User getUser(@PathVariable("user_id") Long userId) {
-        return userRepository.read(userId);
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody User user) {
-        userRepository.create(user);
-    }
-
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<?> handleException(NotFoundException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        model.addAttribute("users", userRepository.readAll());
+        return "Users";
     }
 
 }
